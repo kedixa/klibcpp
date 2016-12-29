@@ -1,6 +1,6 @@
 /*
  * This file is part of klibcpp.
- * multiarray.h - An multi dimension array.
+ * multiarray.h - A multi-dimension array.
  * 
  * License: Read the Readme.md here
  * https://github.com/kedixa/klibcpp/blob/master/README.md
@@ -8,8 +8,8 @@
  * Copyright (c) 2016 kedixa(kedixa@outlook.com)
  *
  */
-#ifndef MULTI_ARRAY_H
-#define MULTI_ARRAY_H
+#ifndef KEDIXA_MULTI_ARRAY_H
+#define KEDIXA_MULTI_ARRAY_H
 
 #include <cstddef>
 #include <new>
@@ -126,7 +126,8 @@ public:
     template<typename... Args>
     multiarray(Args&&... args) = delete;
 };
-}
+
+} // namespace kedixa
 
 #endif // C++11
-#endif // MULTI_ARRAY_H
+#endif // KEDIXA_MULTI_ARRAY_H

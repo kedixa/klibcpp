@@ -1,5 +1,5 @@
 /*
- * test_multiarray.cpp - Test multiarray
+ * test_multiarray.cpp - Test multiarray.
  *
  * Copyright (c) 2016 kedixa(kedixa@outlook.com)
  *
