@@ -1,0 +1,4 @@
+# ignore
+*.out
+*.exe
+*.o
