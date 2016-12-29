@@ -44,17 +44,17 @@ template<typename T, unsigned N, typename Alloc = std::allocator<T> >
 class multiarray
 {
 public:
-    using size_type = size_t;
-    using value_type = typename _subarray_type<T, N, Alloc>::value_type;
-    using pointer = value_type*;
-    using const_pointer = const value_type*;
-    using reference = value_type&;
+    using size_type       = size_t;
+    using value_type      = typename _subarray_type<T, N, Alloc>::value_type;
+    using pointer         = value_type*;
+    using const_pointer   = const value_type*;
+    using reference       = value_type&;
     using const_reference = const value_type&;
-    using allocator_type = typename Alloc::template rebind<value_type>::other;
+    using allocator_type  = typename Alloc::template rebind<value_type>::other;
 private:
     struct _multiarray_data : allocator_type
     {
-        pointer value;
+        pointer   value;
         size_type array_size;
     };
 
@@ -67,14 +67,14 @@ public:
 
         // Note: sz may be zero
         _data.array_size = sz;
-        _data.value = _data.allocate(sz);
+        _data.value      = _data.allocate(sz);
         for(size_t i = 0; i < _data.array_size; ++i)
             _data.construct(_data.value + i, std::forward<Args>(args)...);
     }
     multiarray(const multiarray&) = delete;
     multiarray(multiarray&& ma) noexcept
     {
-        _data.value = nullptr;
+        _data.value      = nullptr;
         _data.array_size = 0;
         std::swap(_data, ma._data);
     }
@@ -121,7 +121,8 @@ template<typename T>
 class multiarray<T, 0>
 {
 public:
-    // Help user find zero dimension error, rather than tons of template error.
+    // Help user find zero dimension error,
+    // rather than tons of template error.
     template<typename... Args>
     multiarray(Args&&... args) = delete;
 };
