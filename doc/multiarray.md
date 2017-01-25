@@ -2,7 +2,7 @@
 
 ## 简介
 
-multiarray 是一个多维数组，位于 src/multiarray.h ，用于方便地定义和使用多维度的动态数组，
+multiarray 是一个多维数组，位于 include/multiarray.h ，用于方便地定义和使用多维度的动态数组，
 数组的每个维度的长度是在运行时确定的，一旦确定便不可更改（否则就成了std::vector），
 且数组的维度必须是一个编译器常量。
 
