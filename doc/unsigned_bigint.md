@@ -111,17 +111,25 @@ unsigned_bigint  multi(const uint_type           ) const;
 unsigned_bigint& multi_eq(const unsigned_bigint& );
 unsigned_bigint& multi_eq(const uint_type        );
 
-std::pair<unsigned_bigint, unsigned_bigint> div(const unsigned_bigint&) const;
-std::pair<unsigned_bigint, unsigned_bigint> div(const uint_type)        const;
-unsigned_bigint div_eq(const unsigned_bigint&);
-unsigned_bigint div_eq(const uint_type);
+unsigned_bigint  div(const unsigned_bigint&      ) const;
+unsigned_bigint  div(const uint_type             ) const;
+unsigned_bigint& div_eq(const unsigned_bigint&   );
+unsigned_bigint& div_eq(const uint_type          );
+
+unsigned_bigint  mod(const unsigned_bigint&      ) const;
+unsigned_bigint  mod(const uint_type             ) const;
+unsigned_bigint& mod_eq(const unsigned_bigint&   );
+unsigned_bigint& mod_eq(const uint_type          );
+
+std::pair<unsigned_bigint, unsigned_bigint> div_mod(const unsigned_bigint&) const;
+std::pair<unsinged_bigint, unsigned_bigint> div_mod(const uint_type       ) const;
 
 void swap(unsigned_bigint&) noexcept;
 size_t size() const noexcept;
 std::string to_string() const;
 ```
 - compare函数将无符号大整数与另一个无符号大整数相比较，返回值<0、==0、>0分别表示*this <、==、>另一个无符号大整数。  
-- add、sub、multi、div等函数与四则运算相同，但div函数返回std::pair，其中first表示商、second表示余数，div_eq函数返回余数。  
+- add、sub、multi、div等函数与四则运算相同，div_mod用于同时返回商和余数。  
 - swap函数交换两个无符号大整数，时间复杂度为常数。  
 - size返回内部std::vector的size。  
 - to_string将无符号大整数转换成字符串。  

@@ -3,7 +3,7 @@
  * This file is part of klibcpp.
  * unsigned_bigint.cpp - unsigned_bigint class implement.
  * 
- * License: Apache 2
+ * License: Apache 2.0
  * Read the Readme.md here for more infomation:
  * https://github.com/kedixa/klibcpp/blob/master/README.md
  * 
@@ -255,60 +255,49 @@ unsigned_bigint operator* (const unsigned_bigint::uint_type lhs, unsigned_bigint
 { return std::move(rhs.multi_eq(lhs)); }
 
 unsigned_bigint operator/ (const unsigned_bigint &lhs, const unsigned_bigint &rhs)
-{ return std::move(lhs.div(rhs).first); }
+{ return std::move(lhs.div(rhs)); }
 unsigned_bigint operator/ (const unsigned_bigint &lhs, unsigned_bigint &&rhs)
-{ return std::move(lhs.div(rhs).first); }
+{ return std::move(lhs.div(rhs)); }
 unsigned_bigint operator/ (unsigned_bigint &&lhs, const unsigned_bigint &rhs)
-{
-    lhs.div_eq(rhs);
-    return std::move(lhs);
-}
+{ return std::move(lhs.div_eq(rhs)); }
 unsigned_bigint operator/ (unsigned_bigint &&lhs, unsigned_bigint &&rhs)
-{
-    lhs.div_eq(rhs);
-    return std::move(lhs);
-}
+{ return std::move(lhs.div_eq(rhs)); }
 unsigned_bigint operator/ (const unsigned_bigint &lhs, const unsigned_bigint::uint_type rhs)
-{ return std::move(lhs.div(rhs).first); }
+{ return std::move(lhs.div(rhs)); }
 unsigned_bigint operator/ (const unsigned_bigint::uint_type lhs, const unsigned_bigint &rhs)
 {
     unsigned_bigint tmp(lhs);
-    tmp.div_eq(rhs);
-    return std::move(tmp);
+    return std::move(tmp.div_eq(rhs));
 }
 unsigned_bigint operator/ (unsigned_bigint &&lhs, const unsigned_bigint::uint_type rhs)
-{
-    lhs.div_eq(rhs);
-    return std::move(lhs);
-}
+{ return std::move(lhs.div_eq(rhs)); }
 unsigned_bigint operator/ (const unsigned_bigint::uint_type lhs, unsigned_bigint &&rhs)
 {
     unsigned_bigint tmp(lhs);
-    tmp.div_eq(rhs);
-    return std::move(tmp);
+    return std::move(tmp.div_eq(rhs));
 }
 
 unsigned_bigint operator% (const unsigned_bigint &lhs, const unsigned_bigint &rhs)
-{ return std::move(lhs.div(rhs).second); }
+{ return std::move(lhs.mod(rhs)); }
 unsigned_bigint operator% (const unsigned_bigint &lhs, unsigned_bigint &&rhs)
-{ return std::move(lhs.div(rhs).second); }
+{ return std::move(lhs.mod(rhs)); }
 unsigned_bigint operator% (unsigned_bigint &&lhs, const unsigned_bigint &rhs)
-{ return std::move(lhs.div(rhs).second); }
+{ return std::move(lhs.mod_eq(rhs)); }
 unsigned_bigint operator% (unsigned_bigint &&lhs, unsigned_bigint &&rhs)
-{ return std::move(lhs.div(rhs).second); }
+{ return std::move(lhs.mod_eq(rhs)); }
 unsigned_bigint operator% (const unsigned_bigint &lhs, const unsigned_bigint::uint_type rhs)
-{ return std::move(lhs.div(rhs).second); }
+{ return std::move(lhs.mod(rhs)); }
 unsigned_bigint operator% (const unsigned_bigint::uint_type lhs, const unsigned_bigint &rhs)
 {
     unsigned_bigint tmp(lhs);
-    return std::move(tmp.div(rhs).second);
+    return std::move(tmp.mod_eq(rhs));
 }
 unsigned_bigint operator% (unsigned_bigint &&lhs, const unsigned_bigint::uint_type rhs)
-{ return std::move(lhs.div(rhs).second); }
+{ return std::move(lhs.mod_eq(rhs)); }
 unsigned_bigint operator% (const unsigned_bigint::uint_type lhs, unsigned_bigint &&rhs)
 {
     unsigned_bigint tmp(lhs);
-    return std::move(tmp.div(rhs).second);
+    return std::move(tmp.mod_eq(rhs));
 }
 
 unsigned_bigint& unsigned_bigint::operator++()
@@ -695,32 +684,80 @@ unsigned_bigint::multi_eq(const uint_type number)
     return *this;
 }
 
-std::pair<unsigned_bigint, unsigned_bigint>
-unsigned_bigint::div(const unsigned_bigint &ubigint) const
-{
-    unsigned_bigint tmp = *this;
-    unsigned_bigint rem = tmp.div_eq(ubigint);
-    return std::make_pair(std::move(tmp), std::move(rem));
-}
-std::pair<unsigned_bigint, unsigned_bigint>
-unsigned_bigint::div(const uint_type number) const
-{
-    unsigned_bigint tmp = *this;
-    unsigned_bigint rem = tmp.div_eq(number);
-    return std::make_pair(std::move(tmp), std::move(rem));
-}
 unsigned_bigint
+unsigned_bigint::div(const unsigned_bigint &ubigint) const
+{ return std::move((this->div_mod(ubigint)).first); }
+unsigned_bigint
+unsigned_bigint::div(const uint_type number) const
+{ return std::move((this->div_mod(number)).first); }
+unsigned_bigint&
 unsigned_bigint::div_eq(const unsigned_bigint &ubigint)
 {
+    *this = std::move((this->div_mod(ubigint)).first);
+    return *this;
+}
+unsigned_bigint&
+unsigned_bigint::div_eq(const uint_type number)
+{
+    if(number == 0)
+        throw std::runtime_error("unsigned_bigint: divide by zero.");
+    if(number == 1)
+        return *this;
+    vector<uint_type> &a = this->digits;
+    ull_type x = ull_type(number), y = 0;
+    size_type i = a.size() - 1;
+    for(; i != (size_type)-1; --i)
+    {
+        y <<= UINT_LEN;
+        y += a[i];
+        a[i] = uint_type(y/x);
+        y %= x;
+    }
+    this->strip();
+    return *this;
+}
+
+unsigned_bigint
+unsigned_bigint::mod(const unsigned_bigint &ubigint) const
+{ return std::move((this->div_mod(ubigint)).second); }
+unsigned_bigint
+unsigned_bigint::mod(const uint_type number) const
+{ return std::move((this->div_mod(number)).second); }
+unsigned_bigint&
+unsigned_bigint::mod_eq(const unsigned_bigint &ubigint)
+{
+    *this = std::move((this->div_mod(ubigint)).second);
+    return *this;
+}
+unsigned_bigint&
+unsigned_bigint::mod_eq(const uint_type number)
+{
+    if(number == 0)
+        throw std::runtime_error("unsigned_bigint: divide by zero.");
+    if(number == 1)
+        return (*this = unsigned_bigint(uint_type(0)));
+    vector<uint_type> &a = this->digits;
+    ull_type x = ull_type(number), y = 0;
+    size_type i = a.size() - 1;
+    for(; i != (size_type)-1; --i)
+    {
+        y <<= UINT_LEN;
+        y += a[i];
+        a[i] = uint_type(y/x);
+        y %= x;
+    }
+    *this = unsigned_bigint(y);
+    return *this;
+}
+
+std::pair<unsigned_bigint, unsigned_bigint>
+unsigned_bigint::div_mod(const unsigned_bigint &ubigint) const
+{
     if(ubigint.digits.size() == 1)
-        return this->div_eq(ubigint.digits[0]);
+        return this->div_mod(ubigint.digits[0]);
     // dividend less than divisor
     if(*this < ubigint)
-    {
-        unsigned_bigint rem(uint_type(0));
-        rem.digits.swap(this->digits);
-        return rem;
-    }
+        return std::make_pair(unsigned_bigint(uint_type(0)), unsigned_bigint(*this));
 
     // implement the algorithm in Knuth[The Art of Computer Programming]
     unsigned_bigint dividend = *this, divisor = ubigint, rem;
@@ -786,19 +823,20 @@ unsigned_bigint::div_eq(const unsigned_bigint &ubigint)
 
     }
     // 3. get quotient and real remainder
-    this->digits.swap(q);
-    this->strip();
+    unsigned_bigint quotient(std::move(q));
     dividend.strip();
     dividend >>= lshift;
-    return dividend; // the remainder
+    return std::make_pair(std::move(quotient), std::move(dividend));
 }
-unsigned_bigint
-unsigned_bigint::div_eq(const uint_type number)
+std::pair<unsigned_bigint, unsigned_bigint>
+unsigned_bigint::div_mod(const uint_type number) const
 {
     if(number == 0)
         throw std::runtime_error("unsigned_bigint: divide by zero.");
-    if(number == 1) return unsigned_bigint(uint_type(0));
-    vector<uint_type> &a = this->digits;
+    if(number == 1)
+        return std::make_pair(unsigned_bigint(*this), unsigned_bigint(uint_type(0)));
+    unsigned_bigint tmp = *this;
+    vector<uint_type> &a = tmp.digits;
     ull_type x = ull_type(number), y = 0;
     size_type i = a.size() - 1;
     for(; i != (size_type)-1; --i)
@@ -808,8 +846,8 @@ unsigned_bigint::div_eq(const uint_type number)
         a[i] = uint_type(y/x);
         y %= x;
     }
-    this->strip();
-    return unsigned_bigint(uint_type(y));
+    tmp.strip();
+    return std::make_pair(std::move(tmp), unsigned_bigint(uint_type(y)));
 }
 
 void unsigned_bigint::swap(unsigned_bigint &ubigint) noexcept

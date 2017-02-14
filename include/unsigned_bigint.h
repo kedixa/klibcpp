@@ -2,7 +2,7 @@
  * This file is part of klibcpp.
  * unsigned_bigint.h - Unsigned big int class.
  * 
- * License: Apache 2
+ * License: Apache 2.0
  * Read the Readme.md here for more infomation:
  * https://github.com/kedixa/klibcpp/blob/master/README.md
  * 
@@ -54,9 +54,13 @@ public:
     // constructors
     explicit
     unsigned_bigint(const uint_type number = 0 );
+    explicit
     unsigned_bigint(const vector<uint_type>&   );
+    explicit
     unsigned_bigint(vector<uint_type>&&        );
+    explicit
     unsigned_bigint(const std::string&         );
+    explicit
     unsigned_bigint(const char*                );
     unsigned_bigint(const unsigned_bigint&     );
     unsigned_bigint(unsigned_bigint&&          );
@@ -194,10 +198,18 @@ public:
     unsigned_bigint& multi_eq(const unsigned_bigint& );
     unsigned_bigint& multi_eq(const uint_type        );
 
-    std::pair<unsigned_bigint, unsigned_bigint> div(const unsigned_bigint&) const;
-    std::pair<unsigned_bigint, unsigned_bigint> div(const uint_type)        const;
-    unsigned_bigint div_eq(const unsigned_bigint&); // return the remainder
-    unsigned_bigint div_eq(const uint_type);
+    unsigned_bigint  div(const unsigned_bigint&      ) const;
+    unsigned_bigint  div(const uint_type             ) const;
+    unsigned_bigint& div_eq(const unsigned_bigint&   );
+    unsigned_bigint& div_eq(const uint_type          );
+
+    unsigned_bigint  mod(const unsigned_bigint&      ) const;
+    unsigned_bigint  mod(const uint_type             ) const;
+    unsigned_bigint& mod_eq(const unsigned_bigint&   );
+    unsigned_bigint& mod_eq(const uint_type          );
+
+    std::pair<unsigned_bigint, unsigned_bigint> div_mod(const unsigned_bigint&) const;
+    std::pair<unsigned_bigint, unsigned_bigint> div_mod(const uint_type)        const;
 
     void swap(unsigned_bigint&) noexcept;
     size_t size() const noexcept;
