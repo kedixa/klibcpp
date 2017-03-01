@@ -97,27 +97,14 @@ unsigned_bigint& unsigned_bigint::operator*=(const unsigned_bigint &ubigint)
 { return this->multi_eq(ubigint); }
 
 unsigned_bigint& unsigned_bigint::operator/=(const uint_type number)
-{
-    // Attention: the div_eq return remainder, not *this
-    this->div_eq(number);
-    return *this;
-}
+{ return this->div_eq(number); }
 unsigned_bigint& unsigned_bigint::operator/=(const unsigned_bigint &ubigint)
-{
-    this->div_eq(ubigint);
-    return *this;
-}
+{ return this->div_eq(ubigint); }
 
 unsigned_bigint& unsigned_bigint::operator%=(const uint_type number)
-{
-    *this = this->div_eq(number);
-    return *this;
-}
+{ return this->mod_eq(number); }
 unsigned_bigint& unsigned_bigint::operator%=(const unsigned_bigint &ubigint)
-{
-    *this = this->div_eq(ubigint);
-    return *this;
-}
+{ return this->mod_eq(ubigint); }
 
 unsigned_bigint& unsigned_bigint::operator&=(const unsigned_bigint &ubigint)
 {
