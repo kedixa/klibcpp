@@ -219,7 +219,7 @@ public:
 
     void swap(unsigned_bigint&) noexcept;
     size_t size() const noexcept;
-    std::string to_string() const;
+    std::string to_string(bool reverse = false) const;
     ~unsigned_bigint() noexcept;
 
     friend std::hash<unsigned_bigint>;

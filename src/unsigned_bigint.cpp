@@ -876,7 +876,7 @@ unsigned_bigint::div_mod(const uint_type number) const
 void unsigned_bigint::swap(unsigned_bigint &ubigint) noexcept
 { this->digits.swap(ubigint.digits); }
 
-std::string unsigned_bigint::to_string() const
+std::string unsigned_bigint::to_string(bool reverse) const
 {
     vector<uint_type> v;
     const vector<uint_type> a = this->digits;
@@ -916,10 +916,15 @@ std::string unsigned_bigint::to_string() const
         back /= 10;
     }
     if(result.size() == 0) result.push_back('0');
-    // reverse result
-    auto first = result.begin(), last = result.end();
-    while((first != last) && (first != --last))
-        std::iter_swap(first, last), ++first;
+
+    // the result itself is reversed, so if reverse is false,
+    // we reverse the result.
+    if(!reverse)
+    {
+        auto first = result.begin(), last = result.end();
+        while((first != last) && (first != --last))
+            std::iter_swap(first, last), ++first;
+    }
     return std::move(result);
 }
 

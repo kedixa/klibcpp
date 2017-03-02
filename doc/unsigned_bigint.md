@@ -132,13 +132,13 @@ std::pair<unsinged_bigint, unsigned_bigint> div_mod(const uint_type       ) cons
 
 void swap(unsigned_bigint&) noexcept;
 size_t size() const noexcept;
-std::string to_string() const;
+std::string to_string(bool reverse = false) const;
 ```
 - compare函数将无符号大整数与另一个无符号大整数相比较，返回值<0、==0、>0分别表示*this <、==、>另一个无符号大整数。  
 - add、sub、multi、div等函数与四则运算相同，div_mod用于同时返回商和余数。  
 - swap函数交换两个无符号大整数，时间复杂度为常数。  
 - size返回内部std::vector的size。  
-- to_string将无符号大整数转换成字符串。  
+- to_string将无符号大整数转换成字符串，如果参数为true，则返回反转的字符串。  
 
 ### 析构函数
 ```cpp
