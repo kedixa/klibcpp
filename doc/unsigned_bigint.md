@@ -50,8 +50,14 @@ unsigned_bigint& operator>>=(const size_type)noexcept;
 ```cpp
 explicit operator bool()      const noexcept;
 explicit operator uint_type() const noexcept;
+explicit operator ull_type()  const noexcept;
+
+uint_type to_uint() const;
+ull_type  to_ull()  const;
+long double to_ld() const;
 ```
-当数为零时，operator bool()返回假，否则返回真。operator uint_type() 返回与 unsigned int字长相同的整数，当溢出时整数被截断。
+当数为零时，operator bool()返回假，否则返回真。operator uint_type() 返回与 unsigned_bigint::uint_type 字长相同的整数，当溢出时整数被截断，operator ull_type() 返回与unsigned_bigint::ull_type 字长相同的整数，当溢出时截断。  
+to_uint() 返回与unsigned_bigint::uint_type 字长相同的整数，当溢出时抛出 std::runtime_error 异常，to_ull() 返回与unsigned_bigint::ull_type 字长相同的整数，当溢出时抛出 std::runtime_error 异常，to_ld() 返回大整数的长浮点数表示，当溢出时抛出 std::runtime_error 异常。
 
 ### 算术运算符
 加、减、乘、除、模等运算，包括无符号大整数与无符号大整数、无符号大整数与C++内置无符号整数之间的运算，以加法为例：  

@@ -14,6 +14,7 @@
 #include "unsigned_bigint.h"
 #include <cassert>
 #include <stdexcept>
+#include <cmath>
 
 namespace kedixa {
 
@@ -188,6 +189,41 @@ unsigned_bigint::operator bool() const noexcept
 { return *this != 0; }
 unsigned_bigint::operator uint_type() const noexcept
 { return this->digits[0]; }
+unsigned_bigint::operator ull_type() const noexcept
+{
+    if(this->digits.size() == 1) return ull_type(this->digits[0]);
+    else return (ull_type(this->digits[1]) << UINT_LEN) | this->digits[0];
+}
+
+// conversion functions
+unsigned_bigint::uint_type unsigned_bigint::to_uint() const
+{
+    if(this->digits.size() > 1)
+        throw std::runtime_error("unsigned_bigint too large to convert to uint.");
+    return static_cast<uint_type>(*this);
+}
+unsigned_bigint::ull_type unsigned_bigint::to_ull() const
+{
+    if(this->digits.size() > 2)
+        throw std::runtime_error("unsigned_bigint too large to convert to ull.");
+    return static_cast<ull_type>(*this);
+}
+long double unsigned_bigint::to_ld() const
+{
+    long double d = 0;
+    long double base = ull_type(1) << UINT_LEN;
+    for(auto it = this->digits.crbegin(); it != this->digits.crend(); ++it)
+    {
+        d *= base;
+        d += (long double)(*it);
+    }
+    if(std::isinf(d))
+    {
+        throw std::runtime_error("unsigned_bigint too large to convert to long double.");
+        return 0;
+    }
+    return d;
+}
 
 // arthmetic operators
 unsigned_bigint operator+ (const unsigned_bigint &lhs, const unsigned_bigint &rhs)

@@ -87,6 +87,12 @@ public:
     // conversion operators
     explicit operator bool()      const noexcept;
     explicit operator uint_type() const noexcept;
+    explicit operator ull_type()  const noexcept;
+
+    // conversion functions
+    uint_type to_uint() const;
+    ull_type  to_ull()  const;
+    long double to_ld() const;
 
     // arithmetic operators
     friend unsigned_bigint operator+ (const unsigned_bigint&, const unsigned_bigint& );

@@ -121,6 +121,31 @@ void check_hash()
     assert(st.find(zero) != st.end());
 }
 
+void check_convert()
+{
+    assert(hundred.to_uint() == 100);
+    unsigned long long ull = 31415926535897ULL;
+    ubig ub1(std::to_string(ull));
+    assert(ub1.to_ull() == ull);
+
+    bool e = false;
+    try { ub1.to_uint(); }
+    catch(exception &ex) { e = true; }
+    assert(e);
+
+    long double d = ub1.to_ld();
+    static_cast<void>(d);
+
+    e = false;
+    int ldsz = std::numeric_limits<long double>::max_exponent + 2;
+    ubig ub2 = ubig(1u) << ldsz;
+    try { ub2.to_ld(); }
+    catch(exception &ex) { e = true; }
+    assert(e);
+
+    assert(abs(ub1.to_ld()-ull) < 1e-7);
+}
+
 void check_others()
 {
     assert((one ^ hundred) == (1 ^ 100));
@@ -137,6 +162,7 @@ void check()
     check_add_sub();
     check_multi_div();
     check_hash();
+    check_convert();
     check_others();
 }
 
