@@ -99,6 +99,8 @@ void check_others()
     assert((neg_one << 4) == -16);
     assert((neg_ten >> 12) == neg_one);
     assert((ten >> 12) == zero);
+    assert(bigint(-7) >> 1 == -4);
+    assert(bigint(-9) >> 2 == -3);
 }
 
 void check()

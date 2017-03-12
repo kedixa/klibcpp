@@ -68,14 +68,20 @@ bigint::bigint(bigint &&big)
 // assignment operators
 bigint& bigint::operator=(const bigint &big)
 {
-    this->sign = big.sign;
-    this->ubig = big.ubig;
+    if(this != &big)
+    {
+        this->sign = big.sign;
+        this->ubig = big.ubig;
+    }
     return *this;
 }
 bigint& bigint::operator=(bigint &&big)
 {
-    this->sign = big.sign;
-    this->ubig = std::move(big.ubig);
+    if(this != &big)
+    {
+        this->sign = big.sign;
+        this->ubig = std::move(big.ubig);
+    }
     return *this;
 }
 bigint& bigint::operator+=(const int_type number)
@@ -209,10 +215,21 @@ bigint operator<<(const bigint &big, bigint::size_type sz)
 }
 bigint operator>>(const bigint &big, bigint::size_type sz)
 {
+    if(sz == 0) return big;
     bigint tmp = big;
-    tmp.ubig >>= sz;
-    if(tmp.sign == 1 && tmp.ubig == 0u)
-        ++tmp.ubig;
+    if(tmp.sign == 0)
+        tmp.ubig >>= sz;
+    // right shift for negative number
+    else if(tmp.sign == 1)
+    {
+        auto x = (unsigned_bigint(1u) << sz) - 1;
+        x &= tmp.ubig; // lower sz bits of tmp.ubig
+        tmp.ubig >>= sz;
+        // if x is not 0, the answer should add by 1
+        // for example, -9 >> 2 = -3, -8 >> 2 = -2
+        if(x != unsigned_bigint(0u))
+            ++tmp.ubig;
+    }
     return std::move(tmp);
 }
 
