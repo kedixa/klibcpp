@@ -4,7 +4,7 @@ CC = gcc
 CXX = g++
 AR = ar rcs
 RM = rm -f
-CXXFLAGS = -std=c++11 -O2 -Wall -Wextra
+CXXFLAGS = -std=c++11 -O2 -Wall -Wextra $(EXT_FLAGS)
 
 BUILD_DIR = ./build
 STATIC_OBJS_DIR = $(BUILD_DIR)/static_obj
