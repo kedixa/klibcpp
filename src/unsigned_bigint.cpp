@@ -880,7 +880,7 @@ std::string unsigned_bigint::to_string(bool reverse) const
 {
     vector<uint_type> v;
     const vector<uint_type> a = this->digits;
-    v.reserve(a.size() * 1.25); // roughly allocate memory
+    v.reserve(a.size() * TOSTR_HINT); // roughly allocate memory
     ull_type y;
     for(size_type i = a.size() - 1; i != size_type(-1); --i)
     {
@@ -928,10 +928,8 @@ std::string unsigned_bigint::to_string(bool reverse) const
     return std::move(result);
 }
 
-size_t unsigned_bigint::size() const noexcept
-{
-    return digits.size();
-}
+unsigned_bigint::size_type unsigned_bigint::size() const noexcept
+{ return digits.size(); }
 
 unsigned_bigint::~unsigned_bigint() noexcept
 { }

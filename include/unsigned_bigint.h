@@ -39,14 +39,18 @@ class unsigned_bigint
 public:
     using size_type   = size_t;
     using uint_type   = uint32_t;
+    using int_type    = int32_t;
     using ull_type    = uint64_t;
     using llint_type  = int64_t;
-private:
+
     static const uint_type UINT_TYPE_MAX = uint_type(-1);
     static const size_type UINT_LEN      = sizeof(uint_type) * 8;
     static const size_type SUBSTR_LEN    = UINT_LEN / 4;
     static const ull_type  TENS_MASK     = NPOW_OF_TEN<ull_type, SUBSTR_LEN>::value;
+
+private:
     static const size_type MULTI_HINT    = 130;
+    static constexpr double TOSTR_HINT   = 0.302 * UINT_LEN / SUBSTR_LEN; // 0.302 ~= log10(2)
 
     vector<uint_type> digits;
     void strip() noexcept;
@@ -218,7 +222,7 @@ public:
     std::pair<unsigned_bigint, unsigned_bigint> div_mod(const uint_type)        const;
 
     void swap(unsigned_bigint&) noexcept;
-    size_t size() const noexcept;
+    size_type size() const noexcept;
     std::string to_string(bool reverse = false) const;
     ~unsigned_bigint() noexcept;
 
@@ -229,7 +233,7 @@ void swap(unsigned_bigint&, unsigned_bigint&) noexcept;
 
 } // namespace kedixa
 
-// specialize std::hash<kedixa::unsigned_bigint
+// specialize std::hash<kedixa::unsigned_bigint>
 namespace std {
 template<> struct hash<kedixa::unsigned_bigint>
 {
