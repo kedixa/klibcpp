@@ -20,11 +20,11 @@ namespace kedixa {
 class bigint
 {
 public:
-    using size_type  = size_t;
-    using uint_type  = uint32_t;
-    using int_type   = int32_t;
-    using ull_type   = uint64_t;
-    using llint_type = int64_t;
+    using size_type  = unsigned_bigint::size_type;
+    using uint_type  = unsigned_bigint::uint_type;
+    using int_type   = unsigned_bigint::int_type;
+    using ull_type   = unsigned_bigint::ull_type;
+    using llint_type = unsigned_bigint::llint_type;
 private:
     unsigned_bigint ubig;
     bool sign;              // 0 for +, 1 for -
@@ -96,24 +96,24 @@ public:
     // others
     int compare(const bigint&      ) const noexcept;
 
-    bigint  add(const bigint&      ) const;
+    bigint  add   (const bigint&   ) const;
     bigint& add_eq(const bigint&   ) ;
-    bigint  sub(const bigint&      ) const;
+    bigint  sub   (const bigint&   ) const;
     bigint& sub_eq(const bigint&   ) ;
-    bigint  multi(const bigint&    ) const;
+    bigint  multi (const bigint&   ) const;
     bigint& multi_eq(const bigint& ) ;
-    bigint  div(const bigint&      ) const;
+    bigint  div   (const bigint&   ) const;
     bigint& div_eq(const bigint&   ) ;
-    bigint  mod(const bigint&      ) const;
+    bigint  mod   (const bigint&   ) const;
     bigint& mod_eq(const bigint&   ) ;
 
     std::pair<bigint, bigint> div_mod(const bigint&) const;
 
-    void inverse()      noexcept; // *this = - *this;
-    void swap(bigint &) noexcept;
-    size_t size() const noexcept;
+    void inverse()         noexcept; // *this = - *this;
+    void swap(bigint &)    noexcept;
+    size_type size() const noexcept;
     std::string to_string(bool reverse = false) const;
-    ~bigint()           noexcept;
+    ~bigint()              noexcept;
 
     friend std::hash<bigint>;
 }; // class bigint
@@ -129,7 +129,7 @@ template<> struct hash<kedixa::bigint>
     size_t operator()(const kedixa::bigint &big) const
     {
         size_t hash_code = hash<kedixa::unsigned_bigint>()(big.ubig);
-        hash_code ^= 0xAAAA5555;
+        if(big.sign) hash_code = ~hash_code, ++hash_code;
         return hash_code;
     }
 };

@@ -217,10 +217,10 @@ bigint operator>>(const bigint &big, bigint::size_type sz)
 {
     if(sz == 0) return big;
     bigint tmp = big;
-    if(tmp.sign == 0)
+    if(tmp.sign == false)
         tmp.ubig >>= sz;
     // right shift for negative number
-    else if(tmp.sign == 1)
+    else if(tmp.sign == true)
     {
         auto x = (unsigned_bigint(1u) << sz) - 1;
         x &= tmp.ubig; // lower sz bits of tmp.ubig
@@ -372,7 +372,7 @@ void bigint::swap(bigint  &big) noexcept
     std::swap(this->sign, big.sign);
     this->ubig.swap(big.ubig);
 }
-size_t bigint::size() const noexcept
+bigint::size_type bigint::size() const noexcept
 { return this->ubig.size(); }
 std::string bigint::to_string(bool reverse) const
 {
