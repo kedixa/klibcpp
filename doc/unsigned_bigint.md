@@ -9,6 +9,7 @@
 ```cpp
 using size_type   = size_t;
 using uint_type   = uint32_t;
+using int_type    = int32_t;
 using ull_type    = uint64_t;
 using llint_type  = int64_t;
 ```

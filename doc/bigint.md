@@ -7,11 +7,11 @@
 
 ### 类型定义
 ```cpp
-using size_type  = size_t;
-using uint_type  = uint32_t;
-using int_type   = int32_t;
-using ull_type   = uint64_t;
-using llint_type = int64_t;
+using size_type  = unsigned_bigint::size_type;
+using uint_type  = unsigned_bigint::uint_type;
+using int_type   = unsigned_bigint::int_type;
+using ull_type   = unsigned_bigint::ull_type;
+using llint_type = unsigned_bigint::llint_type;
 ```
 
 ### 构造函数
