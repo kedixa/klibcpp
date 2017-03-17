@@ -8,6 +8,7 @@ klibcpp (Kedixa's Cplusplus Library)
 - multiarray: 多维数组
 - unsigned_bigint: 无符号大整数类
 - bigint: 带符号大整数类
+- rational: 有理数类  
 
 # Compile and Run
 
