@@ -109,7 +109,7 @@ public:
 
     std::pair<bigint, bigint> div_mod(const bigint&) const;
 
-    void inverse()         noexcept; // *this = - *this;
+    void opposite()        noexcept; // *this = - *this;
     void swap(bigint &)    noexcept;
     size_type size() const noexcept;
     std::string to_string(bool reverse = false) const;

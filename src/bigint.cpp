@@ -202,7 +202,7 @@ bigint bigint::operator+ () const
 bigint bigint::operator- () const
 {
     bigint tmp = *this;
-    tmp.inverse();
+    tmp.opposite();
     return std::move(tmp);
 }
 
@@ -365,7 +365,7 @@ std::pair<bigint, bigint> bigint::div_mod(const bigint &big) const
                         bigint(0));
     }
 }
-void bigint::inverse() noexcept
+void bigint::opposite() noexcept
 { if(*this != bigint(0)) this->sign = !this->sign; }
 void bigint::swap(bigint  &big) noexcept
 {

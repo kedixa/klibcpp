@@ -93,7 +93,7 @@ bigint& mod_eq(const bigint&   ) ;
 
 std::pair<bigint, bigint> div_mod(const bigint&) const;
 
-void inverse()      noexcept;
+void opposite()     noexcept;
 void swap(bigint &) noexcept;
 size_t size() const noexcept;
 std::string to_string(bool reverse = false) const;
@@ -102,7 +102,7 @@ std::string to_string(bool reverse = false) const;
 - swap 用于交换两个大整数，时间复杂度为常数。  
 - size 返回无符号大整数的size()。   
 - to_string 将大整数转换成字符串。  
-- inverse  将*this 转换成相反数。
+- opposite 将*this 转换成相反数。
 
 ### 析构函数
 ```cpp
