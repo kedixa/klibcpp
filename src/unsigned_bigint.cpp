@@ -402,7 +402,7 @@ unsigned_bigint operator^ (unsigned_bigint &&lhs, unsigned_bigint &&rhs)
 bool operator< (const unsigned_bigint &lhs, const unsigned_bigint::uint_type rhs) noexcept
 { return lhs.digits.size() <= 1 && lhs.digits[0] < rhs; }
 bool operator< (const unsigned_bigint::uint_type lhs, const unsigned_bigint &rhs) noexcept
-{ return rhs.digits.size() <= 1 && lhs < rhs.digits[0]; }
+{ return rhs.digits.size() > 1 || lhs < rhs.digits[0]; }
 bool operator< (const unsigned_bigint &lhs, const unsigned_bigint &rhs) noexcept
 { return lhs.compare(rhs) < 0; }
 

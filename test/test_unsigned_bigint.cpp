@@ -60,6 +60,7 @@ void check_relation()
     assert(b1 != 666);
     assert(hundred.compare(ten) > 0);
     assert(hundred.compare(hundred) == 0);
+    assert(ubig("555555555555") > 0);
 }
 
 void check_add_sub()
