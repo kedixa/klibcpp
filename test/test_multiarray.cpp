@@ -15,14 +15,10 @@ public:
     A(double _d = 0.0)
     {
         d = _d;
-        cout << this << " A()\n";
         ++count_A;
     }
     ~A()
-    {
-        cout << this << " ~A()\n";
-        --count_A;
-    }
+    { --count_A; }
 };
 
 template<unsigned N>
@@ -52,31 +48,24 @@ void test_int()
 void test_A()
 {
     {
-        // Construct and destroy 3 * 2 * 1 times.
-        cout << "Construct A_array(3, 2, 1).\n";
         A_array<3> arr(3, 2, 1, 0.5);
         assert(count_A == 6);
         assert(arr[2][1][0].d == 0.5);
-        cout << "Destroy A_array(3, 2, 1).\n";
     }
     assert(count_A == 0);
-    cout << endl;
     {
         // Move copy.
-        cout << "Move construct A_array(2, 1).\n";
         auto f = [](){return A_array<2>(2, 1);};
         auto arr2 = f();
         assert(count_A == 2);
         assert(arr2.size() == 2);
         assert(arr2.dimension() == 2);
 
-        cout << "Move assign A_array(2, 1).\n";
         decltype(arr2) arr3(0, 0);
         arr3 = std::move(arr2);
         assert(count_A == 2);
     }
     assert(count_A == 0);
-    cout << endl;
 }
 
 int main()
