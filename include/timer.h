@@ -19,6 +19,13 @@ class timer
     typedef std::chrono::steady_clock::time_point   tp;
     typedef std::chrono::duration<double>           dd;
     typedef std::chrono::steady_clock               sc;
+public:
+    template<typename F, typename... Args>
+    static double timeit(F&& f, Args&&... args) {
+        timer t;
+        f(args...);
+        return t.stop();
+    }
 private:
     tp _begin;
     dd _span;
