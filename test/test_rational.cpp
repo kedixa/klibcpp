@@ -84,7 +84,7 @@ void check_convert()
     assert(neg_ten_ma);
     long double d = neg_ten_ma.to_ld();
     static_cast<void>(d);
-    assert(one_third.to_ld() == 1.0/3.0);
+    assert(one_third.to_ld() == 1.0L/3.0);
 }
 
 void check_others()
