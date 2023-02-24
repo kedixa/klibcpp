@@ -1,24 +1,15 @@
-/*
- * This file is part of klibcpp.
- * timer.h - A High-precision timer.
- * 
- * License: Read the Readme.md here
- * https://github.com/kedixa/klibcpp/blob/master/README.md
- * 
- * Copyright (c) 2016 kedixa(kedixa@outlook.com)
- *
- */
 #ifndef KEDIXA_TIMER_H
 #define KEDIXA_TIMER_H
 
 #include <chrono>
+
 namespace kedixa {
 
-class timer
-{
+class timer {
     typedef std::chrono::steady_clock::time_point   tp;
     typedef std::chrono::duration<double>           dd;
     typedef std::chrono::steady_clock               sc;
+
 public:
     template<typename F, typename... Args>
     static double timeit(F&& f, Args&&... args) {
@@ -26,9 +17,7 @@ public:
         f(args...);
         return t.stop();
     }
-private:
-    tp _begin;
-    dd _span;
+
 public:
     timer()
         : _begin(sc::now()), _span(dd(0)){}
@@ -55,7 +44,12 @@ public:
         return time;
     }
     ~timer() {}
+
+private:
+    tp _begin;
+    dd _span;
 };
 
 } // namespace kedixa
+
 #endif // KEDIXA_TIMER_H

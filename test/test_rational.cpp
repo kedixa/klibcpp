@@ -4,7 +4,9 @@
 #include <random>
 #include <unordered_set>
 #include <exception>
-#include "rational.h"
+
+#include "kedixa/rational.h"
+
 using namespace std;
 using rational = kedixa::rational;
 using ubigint = kedixa::unsigned_bigint;

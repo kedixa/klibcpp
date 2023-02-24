@@ -1,16 +1,5 @@
-/*
- * This file is part of klibcpp.
- * bigint.cpp - Signed big int class implement.
- * 
- * License: Apache 2.0
- * Read the Readme.md here for more infomation:
- * https://github.com/kedixa/klibcpp/blob/master/README.md
- * 
- * Copyright (c) 2016-2017 kedixa(kedixa@outlook.com)
- *
- */
+#include "kedixa/bigint.h"
 
-#include "bigint.h"
 #include <cassert>
 #include <stdexcept>
 
@@ -132,10 +121,7 @@ bigint::int_type bigint::to_int() const
     if(*this == bigint(std::to_string(i)))
         return i;
     else
-    {
         throw std::runtime_error("bigint too large to convert to int.");
-        return 0;
-    }
 }
 bigint::llint_type bigint::to_ll() const
 {
@@ -143,10 +129,7 @@ bigint::llint_type bigint::to_ll() const
     if(*this == bigint(std::to_string(i)))
         return i;
     else
-    {
         throw std::runtime_error("bigint too large to convert to long long.");
-        return 0LL;
-    }
 }
 long double bigint::to_ld() const
 {

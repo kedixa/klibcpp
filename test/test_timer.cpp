@@ -1,5 +1,6 @@
 #include <iostream>
-#include "timer.h"
+#include "kedixa/timer.h"
+
 using namespace std;
 
 int main()

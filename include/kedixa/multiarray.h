@@ -1,13 +1,3 @@
-/*
- * This file is part of klibcpp.
- * multiarray.h - A multi-dimension array.
- * 
- * License: Read the Readme.md here
- * https://github.com/kedixa/klibcpp/blob/master/README.md
- * 
- * Copyright (c) 2016 kedixa(kedixa@outlook.com)
- *
- */
 #ifndef KEDIXA_MULTI_ARRAY_H
 #define KEDIXA_MULTI_ARRAY_H
 
@@ -15,34 +5,32 @@
 #include <new>
 #include <memory>
 
-#if __cplusplus < 201103L
-#error kedixa::multiarray requires ISO C++ 2011 standard.
-#else
-
 namespace kedixa {
 
 // Forward declaration for multiarray.
 template<typename, unsigned, typename>
 class multiarray;
 
+namespace {
 // Help multiarray derive subarray type.
 template<typename T, unsigned N, typename Alloc>
-struct _subarray_type
-{
+struct _subarray_type {
     using value_type = multiarray<T, N-1, Alloc>;
 };
+
 template<typename T, typename Alloc>
-struct _subarray_type<T, 1, Alloc>
-{
+struct _subarray_type<T, 1, Alloc> {
     using value_type = T;
 };
+
 template<typename T, typename Alloc>
 struct _subarray_type<T, 0, Alloc>
 { };
 
-template<typename T, unsigned N, typename Alloc = std::allocator<T> >
-class multiarray
-{
+} // namespace
+
+template<typename T, unsigned N, typename Alloc = std::allocator<T>>
+class multiarray {
 public:
     using size_type       = size_t;
     using value_type      = typename _subarray_type<T, N, Alloc>::value_type;
@@ -51,38 +39,34 @@ public:
     using reference       = value_type&;
     using const_reference = const value_type&;
     using allocator_type  = typename Alloc::template rebind<value_type>::other;
-private:
-    struct _multiarray_data : allocator_type
-    {
-        pointer   value;
-        size_type array_size;
-    };
 
-    _multiarray_data _data;
-public:
     template<typename... Args>
-    multiarray(size_type sz, Args&&... args) noexcept
-    {
-        static_assert(sizeof...(args) >= N-1, "Number of parameters for kedixa::multiarray incorrect.");
+    multiarray(size_type sz, Args&&... args) noexcept {
+        static_assert(sizeof...(args) >= N-1,
+            "Number of parameters for kedixa::multiarray incorrect.");
 
         // Note: sz may be zero
         _data.array_size = sz;
         _data.value      = _data.allocate(sz);
+
+        // TODO exception safe
         for(size_t i = 0; i < _data.array_size; ++i)
             _data.construct(_data.value + i, std::forward<Args>(args)...);
     }
+
     multiarray(const multiarray&) = delete;
-    multiarray(multiarray&& ma) noexcept
-    {
-        _data.value      = nullptr;
-        _data.array_size = 0;
-        std::swap(_data, ma._data);
+    multiarray(multiarray&& ma) noexcept {
+        _data.value         = ma._data.value;
+        _data.array_size    = ma._data.array_size;
+
+        ma._data.value      = nullptr;
+        ma._data.array_size = 0;
     }
 
     multiarray& operator=(const multiarray&) = delete;
-    multiarray& operator=(multiarray&& ma) noexcept
-    {
-        if(this != &ma) std::swap(_data, ma._data); 
+    multiarray& operator=(multiarray&& ma) noexcept {
+        if(this != &ma)
+            std::swap(_data, ma._data); 
         return *this;
     }
 
@@ -110,16 +94,23 @@ public:
     const_reference operator[](size_type pos) const noexcept
     { return _data.value[pos]; }
 
-    ~multiarray() noexcept
-    {
+    ~multiarray() noexcept {
         for(size_t i = 0; i < _data.array_size; ++i)
             _data.destroy(_data.value + i);
         _data.deallocate(_data.value, _data.array_size);
     }
+
+private:
+    struct _multiarray_data : allocator_type {
+        pointer   value;
+        size_type array_size;
+    };
+
+    _multiarray_data _data;
 };
+
 template<typename T>
-class multiarray<T, 0>
-{
+class multiarray<T, 0> {
 public:
     // Help user find zero dimension error,
     // rather than tons of template error.
@@ -129,5 +120,4 @@ public:
 
 } // namespace kedixa
 
-#endif // C++11
 #endif // KEDIXA_MULTI_ARRAY_H

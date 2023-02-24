@@ -1,17 +1,5 @@
+#include "kedixa/unsigned_bigint.h"
 
-/*
- * This file is part of klibcpp.
- * unsigned_bigint.cpp - unsigned_bigint class implement.
- * 
- * License: Apache 2.0
- * Read the Readme.md here for more infomation:
- * https://github.com/kedixa/klibcpp/blob/master/README.md
- * 
- * Copyright (c) 2016-2017 kedixa(kedixa@outlook.com)
- *
- */
-
-#include "unsigned_bigint.h"
 #include <cassert>
 #include <stdexcept>
 #include <cmath>
@@ -40,6 +28,7 @@ unsigned_bigint::unsigned_bigint(const std::string& str)
         this->digits.assign(1, uint_type(0));
         return;
     }
+
     // string to uint_type
     auto stouint = [&str](size_type first, size_type last) {
         uint_type result = 0;
@@ -51,9 +40,11 @@ unsigned_bigint::unsigned_bigint(const std::string& str)
         }
         return result;
     };
+
     size_type len = str.length();
     size_type pos = len % SUBSTR_LEN;
     if(pos == 0) pos = SUBSTR_LEN;
+
     unsigned_bigint tmp(stouint(0, pos));
     for(; pos < len; pos += SUBSTR_LEN)
     {

@@ -1,23 +1,11 @@
-/*
- * This file is part of klibcpp.
- * rational.h - Rational class.
- * 
- * License: Apache 2.0
- * Read the Readme.md here for more infomation:
- * https://github.com/kedixa/klibcpp/blob/master/README.md
- * 
- * Copyright (c) 2017 kedixa(kedixa@outlook.com)
- *
- */
-
 #ifndef KEDIXA_RATIONAL_H
 #define KEDIXA_RATIONAL_H
 
-#include "unsigned_bigint.h"
+#include "kedixa/unsigned_bigint.h"
+
 namespace kedixa {
 
-class rational
-{
+class rational {
 public:
     using size_type = unsigned_bigint::size_type;
     using uint_type = unsigned_bigint::uint_type;
@@ -25,13 +13,6 @@ public:
     using ull_type  = unsigned_bigint::ull_type;
     using llint_type= unsigned_bigint::llint_type;
     using ubigint   = unsigned_bigint;
-private:
-    ubigint num; // numerator
-    ubigint den; // denominator
-    bool sign;   // 0 for +, 1 for -
-
-    static ubigint gcd(ubigint x, ubigint y);
-    void reduce(); // reduce the fraction
 
 public:
     // constructors
@@ -100,6 +81,13 @@ public:
 
     friend std::hash<rational>;
 
+private:
+    ubigint num; // numerator
+    ubigint den; // denominator
+    bool sign;   // 0 for +, 1 for -
+
+    static ubigint gcd(ubigint x, ubigint y);
+    void reduce(); // reduce the fraction
 }; // class rational
 
 void swap(rational&, rational&) noexcept;
@@ -107,16 +95,17 @@ void swap(rational&, rational&) noexcept;
 } // namespace kedixa
 
 namespace std {
-template<> struct hash<kedixa::rational>
-{
-    size_t operator()(const kedixa::rational &rat) const
-    {
+template<> struct hash<kedixa::rational> {
+    size_t operator()(const kedixa::rational &rat) const {
         auto h = hash<kedixa::unsigned_bigint>();
         size_t hash_code = h(rat.num) ^ h(rat.den);
-        if(rat.sign) hash_code = ~hash_code, ++hash_code;
+        if(rat.sign)
+            hash_code = (~hash_code +  1);
+
         return hash_code;
     }
 };
-}
+
+} // namespace std
 
 #endif // KEDIXA_RATIONAL_H

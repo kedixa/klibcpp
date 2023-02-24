@@ -1,30 +1,18 @@
-/*
- * This file is part of klibcpp.
- * bigint.h - Signed big int class.
- * 
- * License: Apache 2.0
- * Read the Readme.md here for more infomation:
- * https://github.com/kedixa/klibcpp/blob/master/README.md
- * 
- * Copyright (c) 2016-2017 kedixa(kedixa@outlook.com)
- *
- */
-
 #ifndef KEDIXA_BIGINT_H
 #define KEDIXA_BIGINT_H
 
-#include "unsigned_bigint.h"
+#include "kedixa/unsigned_bigint.h"
 
 namespace kedixa {
 
-class bigint
-{
+class bigint {
 public:
     using size_type  = unsigned_bigint::size_type;
     using uint_type  = unsigned_bigint::uint_type;
     using int_type   = unsigned_bigint::int_type;
     using ull_type   = unsigned_bigint::ull_type;
     using llint_type = unsigned_bigint::llint_type;
+
 private:
     unsigned_bigint ubig;
     bool sign;              // 0 for +, 1 for -
@@ -124,16 +112,16 @@ void swap(bigint&, bigint&) noexcept;
 
 // specialize std::hash<kedixa::bigint>
 namespace std {
-template<> struct hash<kedixa::bigint>
-{
-    size_t operator()(const kedixa::bigint &big) const
-    {
+template<> struct hash<kedixa::bigint> {
+    size_t operator()(const kedixa::bigint &big) const {
         size_t hash_code = hash<kedixa::unsigned_bigint>()(big.ubig);
-        if(big.sign) hash_code = ~hash_code, ++hash_code;
+        if(big.sign)
+            hash_code = (~hash_code + 1);
+
         return hash_code;
     }
 };
 
 } // namespace std
 
- #endif // KEDIXA_BIGINT_H
+#endif // KEDIXA_BIGINT_H

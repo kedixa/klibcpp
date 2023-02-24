@@ -1,15 +1,3 @@
-/*
- * This file is part of klibcpp.
- * unsigned_bigint.h - Unsigned big int class.
- * 
- * License: Apache 2.0
- * Read the Readme.md here for more infomation:
- * https://github.com/kedixa/klibcpp/blob/master/README.md
- * 
- * Copyright (c) 2016-2017 kedixa(kedixa@outlook.com)
- *
- */
-
 #ifndef KEDIXA_UNSIGNED_BIGINT_H
 #define KEDIXA_UNSIGNED_BIGINT_H
 
@@ -18,9 +6,11 @@
 #include <string>
 #include <utility>
 #include <functional>
+
 namespace kedixa {
 
 namespace _k_help {
+
 template<typename T, unsigned N>
 struct NPOW_OF_TEN
 { static const T value = NPOW_OF_TEN<T, N-1>::value * 10; };
@@ -28,14 +18,15 @@ struct NPOW_OF_TEN
 template<typename T>
 struct NPOW_OF_TEN<T, 0>
 { static const T value = 1; };
+
 } // namespace _k_help
 
-class unsigned_bigint
-{
+class unsigned_bigint {
     template<typename T>
     using vector      = std::vector<T>;
     template<typename T, unsigned N>
     using NPOW_OF_TEN = _k_help::NPOW_OF_TEN<T, N>;
+
 public:
     using size_type   = size_t;
     using uint_type   = uint32_t;
@@ -54,6 +45,7 @@ private:
 
     vector<uint_type> digits;
     void strip() noexcept;
+
 public:
     // constructors
     explicit
@@ -235,14 +227,14 @@ void swap(unsigned_bigint&, unsigned_bigint&) noexcept;
 
 // specialize std::hash<kedixa::unsigned_bigint>
 namespace std {
-template<> struct hash<kedixa::unsigned_bigint>
-{
-    size_t operator()(const kedixa::unsigned_bigint &ubigint) const
-    {
+template<> struct hash<kedixa::unsigned_bigint> {
+    size_t operator()(const kedixa::unsigned_bigint &ubigint) const {
         size_t hash_code = 0;
         auto h = std::hash<kedixa::unsigned_bigint::uint_type>();
+
         for(auto &x : ubigint.digits)
             hash_code ^= h(x);
+
         return hash_code;
     }
 };

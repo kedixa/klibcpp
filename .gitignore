@@ -1,6 +1,2 @@
 # ignore
-build/*
-lib/*
-*.out
-*.exe
-*.o
+build.*

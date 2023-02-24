@@ -6,8 +6,11 @@
  */
 #include <iostream>
 #include <cassert>
-#include "multiarray.h"
+
+#include "kedixa/multiarray.h"
+
 using namespace std;
+
 int count_A = 0;
 class A{
 public:

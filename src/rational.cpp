@@ -1,16 +1,5 @@
-/*
- * This file is part of klibcpp.
- * rational.cpp - Rational class implement.
- * 
- * License: Apache 2.0
- * Read the Readme.md here for more infomation:
- * https://github.com/kedixa/klibcpp/blob/master/README.md
- * 
- * Copyright (c) 2017 kedixa(kedixa@outlook.com)
- *
- */
+#include "kedixa/rational.h"
 
-#include "rational.h"
 #include <stdexcept>
 
 namespace kedixa {

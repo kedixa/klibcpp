@@ -4,7 +4,9 @@
 #include <random>
 #include <unordered_set>
 #include <exception>
-#include "bigint.h"
+
+#include "kedixa/bigint.h"
+
 using namespace std;
 using bigint = kedixa::bigint;
 
