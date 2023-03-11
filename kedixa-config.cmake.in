@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+set(KEDIXA_VERSION "@kedixa_VERSION@")
+set_and_check(KEDIXA_INCLUDE_DIR "@PACKAGE_INCLUDE_DIR@")
+set_and_check(KEDIXA_LIBRARY_DIR "@PACKAGE_LIBRARY_DIR@")
+
+check_required_components(kedixa)
+set(KEDIXA_LIBRARIES ${KEDIXA_LIBRARY_DIR}/libkedixa.a)

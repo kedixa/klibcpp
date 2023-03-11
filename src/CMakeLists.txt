@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.6)
 
-add_library(${LIBRARY_NAME} STATIC
+add_library(${KEDIXA_LIBRARY_NAME} STATIC
     bigint.cpp
     rational.cpp
     unsigned_bigint.cpp
 )
 
-include_directories(${LIBRARY_NAME}
-    ${PROJECT_SOURCE_DIR}/include
+include_directories(${KEDIXA_LIBRARY_NAME}
+    ${KEDIXA_INCLUDE_DIR}
 )
 
-target_include_directories(${LIBRARY_NAME} PUBLIC
-    ${PROJECT_SOURCE_DIR}/include
+target_include_directories(${KEDIXA_LIBRARY_NAME} PUBLIC
+    ${KEDIXA_INCLUDE_DIR}
 )

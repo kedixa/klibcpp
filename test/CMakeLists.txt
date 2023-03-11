@@ -1,5 +1,15 @@
 cmake_minimum_required(VERSION 3.6)
 
+project(
+    kedixa-test
+    LANGUAGES CXX
+)
+
+find_package(kedixa REQUIRED)
+find_package(Threads REQUIRED)
+
+include_directories(${KEDIXA_INCLUDE_DIR})
+
 set(TEST_TARGETS
     test_bigint
     test_multiarray
@@ -11,7 +21,6 @@ set(TEST_TARGETS
 set(CMAKE_BUILD_TYPE Debug)
 
 foreach(TARGET ${TEST_TARGETS})
-
     add_executable(
         ${TARGET}
         ${TARGET}.cpp
@@ -19,7 +28,7 @@ foreach(TARGET ${TEST_TARGETS})
 
     target_link_libraries(
         ${TARGET}
-        ${LIBRARY_NAME}
+        ${KEDIXA_LIBRARIES}
+        Threads::Threads
     )
-
 endforeach()
