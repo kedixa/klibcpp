@@ -9,6 +9,7 @@ find_package(kedixa REQUIRED)
 find_package(Threads REQUIRED)
 
 include_directories(${KEDIXA_INCLUDE_DIR})
+link_directories(${KEDIXA_LIBRARY_DIR})
 
 set(TEST_TARGETS
     test_bigint
